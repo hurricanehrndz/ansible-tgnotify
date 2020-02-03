@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Run ansible-tgnotify role
+      include_role:
+        name: ansible-tgnotify
