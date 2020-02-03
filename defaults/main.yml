@@ -1,2 +1,9 @@
 ---
-# defaults file for ansible-tgnotify
+postfix_config_file: /etc/postfix/main.cf
+posfix_mydomain: "{{ ansible_domain }}"
+
+postfix_service_state: started
+postfix_service_enabled: true
+
+postfix_inet_interfaces: loopback-only
+postfix_inet_protocols: ipv4
