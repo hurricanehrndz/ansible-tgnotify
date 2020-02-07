@@ -1,3 +1,9 @@
 ---
 - name: restart postfix
   service: name=postfix state=restarted
+
+- name: postmap sender_canonical
+  cmd: postmap {{ postfix_sender_canonical_file }}
+
+- name: postmap transport
+  cmd: postmap {{ postfix_transport_file }}

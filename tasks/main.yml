@@ -1,2 +1,58 @@
 ---
-# tasks file for ansible-tgnotify
+- name: Ensure Postfix is installed.
+  package:
+    name: postfix
+    state: present
+
+- name: Install Postfix transport map
+  template:
+    src: transport.j2
+    dest: "{{ postfix_transport_file }}"
+    owner: root
+    group: root
+  notify: postmap transport
+
+- name: Install Postfix sender_canonical maps
+  template:
+    src: sender_canonical.j2
+    dest: "{{ postfix_sender_canonical_file }}"
+    owner: root
+    group: root
+  notify: postmap sender_canonical
+
+# install trsnaport script for telegram
+- name: Install Telegram transport script
+  template:
+    src: tg-notify.j2
+    dest: "{{ postfix_transport_script }}"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Update Postfix master process configuration
+  lineinfile:
+    dest: "{{ postfix_master_process_file }}"
+    line: "tgnotification unix  -       n       n       -       -       pipe flags=qX user=nobody argv={{ postfix_transport_script }} ${sender}" # noqa 204
+    regexp: "^tgnotification"
+
+- name: Install main.cf config
+  template:
+    src: main.cf.j2
+    dest: "{{ postfix_config_file }}"
+  notify:
+    - postifx update-configuration
+    - restart postfix
+
+- name: Force all notified handlers to run at this point
+  meta: flush_handlers
+
+- name: Ensure install location for notification transport exists
+  file:
+    path: "{{ postfix_script_dest }}"
+    state: directory
+
+- name: Ensure postfix is started and enabled at boot.
+  service:
+    name: postfix
+    state: "{{ postfix_service_state }}"
+    enabled: "{{ postfix_service_enabled }}"

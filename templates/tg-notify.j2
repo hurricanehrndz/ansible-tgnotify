@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# This file is part of OpenMediaVault.
+#
+# @license   http://www.gnu.org/licenses/gpl.html GPL Version 3
+# @author    Volker Theile <volker.theile@openmediavault.org>
+# @copyright Copyright (c) 2009-2020 Volker Theile
+#
+# OpenMediaVault is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# OpenMediaVault is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+TG_NOTIFICATION_FROM=${1%%\@*}
+TG_NOTIFICATION_RECIPIENT=
+TG_NOTIFICATION_SUBJECT=
+TG_NOTIFICATION_DATE=
+TG_NOTIFICATION_MESSAGE_FILE=$(tempfile)
+
+# Clean up when done or when aborting.
+trap "rm -f ${TG_NOTIFICATION_MESSAGE_FILE}" 0 1 2 3 15
+
+# Read the email from stdin.
+cat >${TG_NOTIFICATION_MESSAGE_FILE}
+
+# Extract various header fields from the email.
+TG_NOTIFICATION_RECIPIENT=$(sed -n -e 's/^To: \(.*\)/\1/p' ${TG_NOTIFICATION_MESSAGE_FILE})
+TG_NOTIFICATION_SUBJECT=$(sed -n -e 's/^Subject: \(.*\)/\1/p' ${TG_NOTIFICATION_MESSAGE_FILE})
+TG_NOTIFICATION_DATE=$(sed -n -e 's/^Date: \(.*\)/\1/p' ${TG_NOTIFICATION_MESSAGE_FILE})
+
+# Remove all header fields from the email to get the plain message part.
+sed -i -e '1,/^$/d' ${TG_NOTIFICATION_MESSAGE_FILE}
+
+# Get clean message
+TG_NOTIFICATION_MESSAGE="$(cat ${TG_NOTIFICATION_MESSAGE_FILE})"
+
+# Execute the notification
+TELEGRAM_BOT_TOKEN={{ postfix_tg_bot_token }}
+TELEGRAM_CHAT_ID={{ postfix_tg_chat_id }}
+
+template=$(cat <<TEMPLATE
+*$TG_NOTIFICATION_FROM - $TG_NOTIFICATION_SUBJECT*
+
+Date/Time: $TG_NOTIFICATION_DATE
+
+Additional Info:
+\`$TG_NOTIFICATION_MESSAGE\`
+
+TEMPLATE
+)
+
+/usr/bin/curl --silent --output /dev/null \
+  --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+  --data-urlencode "text=${template}" \
+  --data-urlencode "parse_mode=Markdown" \
+  "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage"
+
+exit 0
