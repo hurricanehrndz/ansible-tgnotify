@@ -9,7 +9,7 @@ postfix_inet_interfaces: loopback-only
 postfix_inet_protocols: ipv4
 
 postfix_transport_script_dest: /usr/local/share/telegram
-postfix_transport_script_name: tg-notify
+postfix_transport_script_name: tgnotify
 postfix_transport_script: "{{ postfix_script_dest }}/{{ postfix_transport_script_name }}"
 postfix_transport_file: /etc/postfix/transport
 

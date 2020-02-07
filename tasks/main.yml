@@ -23,7 +23,7 @@
 # install trsnaport script for telegram
 - name: Install Telegram transport script
   template:
-    src: tg-notify.j2
+    src: tgnotify.j2
     dest: "{{ postfix_transport_script }}"
     owner: root
     group: root
