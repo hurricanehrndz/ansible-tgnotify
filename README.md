@@ -1,10 +1,11 @@
-# Role Name
+# hurricanehrndz.tgnotify
 
 [![Build Status][travis-badge]][travis-link]
 [![Galaxy Role][role-badge]][galaxy-link]
 [![GPLv3 licensed][gpl-badge]][gpl-link]
 
-Ansible role to route all system notification to a Telegram bot.
+Ansible role to route all system notification to a Telegram bot. `tgnotify`
+script is base on [OMV's notification filter][omv-notificationfilter].
 
 ![tgnotify][demo]
 
@@ -14,7 +15,7 @@ Ansible role to route all system notification to a Telegram bot.
 * Telegram bot token
 * Telegram bot chat_id
 
-Follow this great post to get start with [BotFather][BotFather].
+Follow this great post to get start with [BotFather][BotFather] or [OMV's guide][omv-guide].
 
 ## Role Variables
 
@@ -72,3 +73,5 @@ Carlos Hernandez | [e-mail](mailto:hurricanehrndz@techbyte.ca)
 [galaxy-link]: https://galaxy.ansible.com/hurricanehrndz/ansible-tgnotify/
 [role-badge]: https://img.shields.io/ansible/role/d/45889?style=for-the-badge
 [demo]: ./images/demo.gif
+[omv-notificationfilter]: https://github.com/openmediavault/openmediavault/blob/1bfb24aaef32a1bd96abc078553a912ef7ccc5e6/deb/openmediavault/usr/share/openmediavault/notification/postfix-runner.sh
+[omv-guide]: https://forum.openmediavault.org/index.php/Thread/14919-GUIDE-Use-Telegram-as-notification-service/
