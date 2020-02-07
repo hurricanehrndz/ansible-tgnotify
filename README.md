@@ -6,7 +6,7 @@
 
 Ansible role to route all system notification to a Telegram bot.
 
-![tgnotify][demo]]
+[![tgnotify][demo]]
 
 ## Requirements
 
