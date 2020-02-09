@@ -7,7 +7,7 @@ matrix:
       env:
         - ANSIBLE='ansible>=2.8'
         - MOLECULE_SCENARIO="default"
-        - MOLECULE_DISTRIBUTION="ci-fedora31"
+        - MOLECULE_IMAGE="ansible-ci-fedora31"
       services: docker
       language: python
       python: "3.8"
@@ -15,7 +15,7 @@ matrix:
       env:
         - ANSIBLE='ansible>=2.8'
         - MOLECULE_SCENARIO="default"
-        - MOLECULE_DISTRIBUTION="ubuntu18"
+        - MOLECULE_IMAGE="ubuntu18-ansible"
       services: docker
       language: python
       python: "3.8"

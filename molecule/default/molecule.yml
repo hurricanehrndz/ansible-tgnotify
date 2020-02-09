@@ -11,8 +11,8 @@ lint:
     config-data:
       ignore: '.direnv/'
 platforms:
-  - name: "ansible-tgnotify_${MOLECULE_DISTRIBUTION:-ubuntu18}"
-    image: "quay.io/samdoran/${MOLECULE_DISTRIBUTION:-ubuntu18}-ansible:latest"
+  - name: "ansible-tgnotify_${MOLECULE_IMAGE:-ubuntu18}"
+    image: "quay.io/samdoran/${MOLECULE_IMAGE:-ubunut18-ansible}:latest"
     command: ${MOLECULE_COMMAND:-""}
     volumes:
       - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
