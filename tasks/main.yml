@@ -21,6 +21,11 @@
   notify: postmap sender_canonical
 
 # install trsnaport script for telegram
+- name: Ensure install location for notification transport exists
+  file:
+    path: "{{ postfix_transport_script_dest }}"
+    state: directory
+
 - name: Install Telegram transport script
   template:
     src: tgnotify.j2
@@ -40,16 +45,11 @@
     src: main.cf.j2
     dest: "{{ postfix_config_file }}"
   notify:
-    - postifx update-configuration
+    - postifx upgrade-configuration
     - restart postfix
 
 - name: Force all notified handlers to run at this point
   meta: flush_handlers
-
-- name: Ensure install location for notification transport exists
-  file:
-    path: "{{ postfix_script_dest }}"
-    state: directory
 
 - name: Ensure postfix is started and enabled at boot.
   service:

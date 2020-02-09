@@ -3,7 +3,10 @@
   service: name=postfix state=restarted
 
 - name: postmap sender_canonical
-  cmd: postmap {{ postfix_sender_canonical_file }}
+  command: postmap {{ postfix_sender_canonical_file }}
 
 - name: postmap transport
-  cmd: postmap {{ postfix_transport_file }}
+  command: postmap {{ postfix_transport_file }}
+
+- name: postifx upgrade-configuration
+  command: postfix upgrade-configuration

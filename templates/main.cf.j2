@@ -1,6 +1,6 @@
 mydestination = 
 compatibility_level=2
 inet_interfaces = {{ postfix_inet_interfaces }}
-sender_canonical_maps = regexp:{{ posfix_canonical_sender_file }}
-transport_maps = regex:{{ postfix_transport_file }}
+sender_canonical_maps = regexp:{{ postfix_sender_canonical_file }}
+transport_maps = regexp:{{ postfix_transport_file }}
 inet_protocols = {{ postfix_inet_protocols }}

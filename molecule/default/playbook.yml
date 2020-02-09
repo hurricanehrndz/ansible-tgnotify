@@ -1,6 +1,9 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    postfix_tg_bot_token: "bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+    postfix_tg_chat_id: "246367260"
   tasks:
     - name: Run ansible-tgnotify role
       include_role:
